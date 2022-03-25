@@ -14,6 +14,9 @@ def create_right_prompt [] {
     $time_segment
 }
 
+# Load local-config.nu
+source ~/.config/nushell/local-config.nu
+
 # Use nushell functions to define your right and left prompt
 let-env PROMPT_COMMAND = { create_left_prompt }
 let-env PROMPT_COMMAND_RIGHT = { create_right_prompt }
@@ -35,25 +38,15 @@ let-env PROMPT_COMMAND = { starship prompt --cmd-duration $env.CMD_DURATION_MS -
 # - converted from a string to a value on Nushell startup (from_string)
 # - converted from a value back to a string when running extrnal commands (to_string)
 let-env ENV_CONVERSIONS = {
-"PATH": {
-  from_string: { |s| $s | split row (char esep) }
-  to_string: { |v| $v | str collect (char esep) }
+  "PATH": {
+    from_string: { |s| $s | split row (char esep) }
+    to_string: { |v| $v | str collect (char esep) }
+  }
+  "Path": {
+    from_string: { |s| $s | split row (char esep) }
+    to_string: { |v| $v | str collect (char esep) }
+  }
 }
-"Path": {
-  from_string: { |s| $s | split row (char esep) }
-  to_string: { |v| $v | str collect (char esep) }
-}
-}
-
-# Custom completions for external commands (those outside of Nushell)
-source ~/nu_scripts/custom-completions/git/git-completions.nu
-source ~/nu_scripts/custom-completions/winget/winget-completions.nu
-source ~/nu_scripts/custom-completions/cargo/cargo-completions.nu
-# source ~/nu_scripts/custom-completions/make/make-completions.nu
-# source ~/nu_scripts/custom-completions/npm/npm-completions.nu
-
-# Additional config
-source ~/OneDrive/DevFiles/.dotfiles/windows/startup/nushell-startup.nu
 
 # Directories to search for scripts when calling source or use
 #
