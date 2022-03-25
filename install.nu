@@ -1,12 +1,22 @@
-# Copy sample-config/local-config.nu if ~/.config/nushell/local-config.nu does not exist
-let local-config-destination = $"($env.HOME)/.config/nushell"
-let local-config-path = $"($local-config-destination)/local-config.nu"
-let path_segment = ($env.PWD)
-let destination = ($nu.config-path)
+let local_config_dir = "~/.config/nushell"
+let dotfiles_symlink = "~/.config/dotfiles"
+let local_config_path = $"($local_config_dir)/local-config.nu"
+let current_dir = ($env.PWD)
+let destination_path = ($nu.config-path)
 
-if (($local-config-path | path exists) != true) {
-    mkdir $local-config-destination
-    cp $"($path_segment)/nushell/sample-config/local-config.nu" $local-config-path
+# Copy sample-config/local-config.nu if ~/.config/nushell/local-config.nu does not exist
+if (($local_config_path | path exists) != true) {
+    mkdir $"($local_config_dir)"
+    cp $"($current_dir)/nushell/sample-config/local-config.nu" $"($local_config_path)"
 }
 
-echo $"source ($path_segment)/nushell/config.nu" | save $"($destination)"
+if (($dotfiles_symlink | path exists) != true) {
+    if ((sys).host.name == "Windows") {
+        mklink $dotfiles_symlink $current_dir
+    }
+    else {
+        ln -s $current_dir $dotfiles_symlink
+    }
+}
+
+echo $"source ($current_dir)/nushell/config.nu" | save $"(destination_path)"

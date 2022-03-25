@@ -34,6 +34,15 @@ hide PROMPT_COMMAND_RIGHT
 let-env PROMPT_INDICATOR = " "
 let-env PROMPT_COMMAND = { starship prompt --cmd-duration $env.CMD_DURATION_MS --status $env.LAST_EXIT_CODE | str trim }
 
+# Additional config
+source "~/.config/dotfiles/nushell/aliases.nu"
+source "~/.config/dotfiles/nushell/commands.nu"
+
+# Custom completions for external commands (those outside of Nushell)
+source "~/.config/dotfiles/nushell/nu_scripts/custom-completions/git/git-completions.nu"
+source "~/.config/dotfiles/nushell/nu_scripts/custom-completions/winget/winget-completions.nu"
+source "~/.config/dotfiles/nushell/nu_scripts/custom-completions/cargo/cargo-completions.nu"
+
 # Specifies how environment variables are:
 # - converted from a string to a value on Nushell startup (from_string)
 # - converted from a value back to a string when running extrnal commands (to_string)
