@@ -39,9 +39,10 @@ source "~/.config/dotfiles/nushell/aliases.nu"
 source "~/.config/dotfiles/nushell/commands.nu"
 
 # Custom completions for external commands (those outside of Nushell)
-source "~/.config/dotfiles/nushell/nu_scripts/custom-completions/git/git-completions.nu"
-source "~/.config/dotfiles/nushell/nu_scripts/custom-completions/winget/winget-completions.nu"
-source "~/.config/dotfiles/nushell/nu_scripts/custom-completions/cargo/cargo-completions.nu"
+use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/git/git-completions.nu" *
+use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/winget/winget-completions.nu" *
+use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/cargo/cargo-completions.nu" *
+use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/npm/npm-completions.nu" *
 
 # Specifies how environment variables are:
 # - converted from a string to a value on Nushell startup (from_string)
