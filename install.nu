@@ -1,11 +1,11 @@
-let local_config_dir = "~/.config/nushell"
-let dotfiles_symlink = "~/.config/dotfiles"
-let local_config_path = $"($local_config_dir)/local-config.nu"
+let local_config_dir = $"($env.HOME)\\.config\\nushell"
+let dotfiles_symlink = $"($env.HOME)\\.config\\dotfiles"
+let local_config_path = $"($local_config_dir)\\local-config.nu"
 
 # Copy sample-config/local-config.nu if ~/.config/nushell/local-config.nu does not exist
 if (($local_config_path | path exists) != true) {
     mkdir $"($local_config_dir)"
-    cp $"($env.PWD)/nushell/sample-config/local-config.nu" $"($local_config_path)"
+    cp $"($env.PWD)\\nushell\\sample-config\\local-config.nu" $"($local_config_path)"
 }
 
 if (($dotfiles_symlink | path exists) != true) {
@@ -17,4 +17,4 @@ if (($dotfiles_symlink | path exists) != true) {
     }
 }
 
-echo $"source ($env.PWD)/nushell/config.nu" | save $"($nu.config-path)"
+echo $"source ($env.PWD)\\nushell\\config.nu" | save $"($nu.config-path)"
