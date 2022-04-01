@@ -1,5 +1,5 @@
-let local_config_dir = $"($env.HOME)\\.config\\nushell"
-let dotfiles_symlink = $"($env.HOME)\\.config\\dotfiles"
+let local_config_dir = $"($env.USERPROFILE)\\.config\\nushell"
+let dotfiles_symlink = $"($env.USERPROFILE)\\.config\\dotfiles"
 let local_config_path = $"($local_config_dir)\\local-config.nu"
 
 # Copy sample-config/local-config.nu if ~/.config/nushell/local-config.nu does not exist
@@ -10,10 +10,10 @@ if (($local_config_path | path exists) != true) {
 
 if (($dotfiles_symlink | path exists) != true) {
     if ((sys).host.name == "Windows") {
-        mklink /d $"($dotfiles_symlink)" $"($env.PWD)"
+        ^mklink /d $"($dotfiles_symlink)" $"($env.PWD)"
     }
     else {
-        ln -s $env.PWD $dotfiles_symlink
+        ^ln -s $env.PWD $dotfiles_symlink
     }
 }
 
