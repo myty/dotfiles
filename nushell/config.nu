@@ -17,6 +17,22 @@ def create_right_prompt [] {
 # Load local-config.nu
 source ~/.config/nushell/local-config.nu
 
+
+
+# Polyfill until "str replace" is implemented
+if (version | get version | str substring '2,4' | into int) > 60 {
+  error make {msg: "The 'str replace' polyfill commands can be removed."}
+}
+
+# Polyfill until "str replace" is implemented
+def "str replace" [pattern: string, replacement: string] {
+  let polyfill = if (version | get version | str substring '2,4' | into int) < 60 {
+    each { |it| $it } | str find-replace $pattern $replacement
+  }
+
+  $polyfill
+}
+
 # Use nushell functions to define your right and left prompt
 let-env PROMPT_COMMAND = { create_left_prompt }
 let-env PROMPT_COMMAND_RIGHT = { create_right_prompt }
