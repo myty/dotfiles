@@ -1,4 +1,4 @@
-# Nushell Config File
+# Nushell Environment Config File
 
 def create_left_prompt [] {
     let path_segment = ($env.PWD)
@@ -46,7 +46,8 @@ use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/npm/npm-completion
 
 # Specifies how environment variables are:
 # - converted from a string to a value on Nushell startup (from_string)
-# - converted from a value back to a string when running extrnal commands (to_string)
+# - converted from a value back to a string when running external commands (to_string)
+# Note: The conversions happen *after* config.nu is loaded
 let-env ENV_CONVERSIONS = {
   "PATH": {
     from_string: { |s| $s | split row (char esep) }
