@@ -12,6 +12,7 @@ use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/git/git-completion
 use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/winget/winget-completions.nu" *
 use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/cargo/cargo-completions.nu" *
 use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/npm/npm-completions.nu" *
+use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/yarn/yarn-completions.nu" *
 
 # for more information on themes see
 # https://www.nushell.sh/book/coloring_and_theming.html
