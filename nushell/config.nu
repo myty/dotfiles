@@ -3,12 +3,6 @@
 # Load local-config.nu
 source ~/.config/nushell/local-config.nu
 
-# Starship
-let-env STARSHIP_SHELL = "nu"
-hide PROMPT_COMMAND_RIGHT
-let-env PROMPT_INDICATOR = " "
-let-env PROMPT_COMMAND = { starship prompt --cmd-duration $env.CMD_DURATION_MS --status $env.LAST_EXIT_CODE | str trim }
-
 # Additional config
 source "~/.config/dotfiles/nushell/aliases.nu"
 source "~/.config/dotfiles/nushell/commands.nu"
@@ -281,3 +275,5 @@ let-env config = {
     }
   ]
 }
+
+source ~/.cache/starship/init.nu
