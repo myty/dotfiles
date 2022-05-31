@@ -18,3 +18,4 @@ if (($dotfiles_symlink | path exists) != true) {
 }
 
 echo $"source ($env.PWD)\\nushell\\config.nu" | save $"($nu.config-path)"
+echo $"source ($env.PWD)\\nushell\\env.nu" | save $"($nu.env-path)"
