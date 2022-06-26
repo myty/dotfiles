@@ -9,9 +9,6 @@ source "~/.config/dotfiles/nushell/commands.nu"
 
 # Custom completions for external commands (those outside of Nushell)
 use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/git/git-completions.nu" *
-use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/winget/winget-completions.nu" *
-use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/cargo/cargo-completions.nu" *
-use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/npm/npm-completions.nu" *
 
 # for more information on themes see
 # https://www.nushell.sh/book/coloring_and_theming.html
