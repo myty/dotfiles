@@ -9,10 +9,8 @@ on:
     - cron:  '0 22 * * *'
 
 jobs:
-  build:
-
+  update:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Pull latest commits from the nu_script repo
