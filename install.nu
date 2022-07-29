@@ -9,12 +9,7 @@ if (($local_config_path | path exists) != true) {
 }
 
 if (($dotfiles_symlink | path exists) != true) {
-    if ((sys).host.name == "Windows") {
-        ^mklink /d $"($dotfiles_symlink)" $"($env.PWD)"
-    }
-    else {
-        ^ln -s $env.PWD $dotfiles_symlink
-    }
+    if ((sys).host.name == "Windows") { ^mklink /d $"($dotfiles_symlink)" $"($env.PWD)" } else { ^ln -s $env.PWD $dotfiles_symlink }
 }
 
 echo $"source ($env.PWD)\\nushell\\config.nu" | save $"($nu.config-path)"
