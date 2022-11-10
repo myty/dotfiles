@@ -4,3 +4,4 @@ alias ac = and-cli
 alias gs = git submodule
 alias gsf = git submodule foreach
 alias gsu = git submodule update
+alias docker = podman
