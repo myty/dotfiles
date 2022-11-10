@@ -56,11 +56,13 @@ let dark_theme = {
     shape_record: cyan_bold
     shape_block: blue_bold
     shape_filepath: cyan
+    shape_directory: cyan
     shape_globpattern: cyan_bold
     shape_variable: purple
     shape_flag: blue_bold
     shape_custom: green
     shape_nothing: light_cyan
+    shape_matching_brackets: { attr: u }
 }
 
 let light_theme = {
@@ -107,11 +109,13 @@ let light_theme = {
     shape_record: cyan_bold
     shape_block: blue_bold
     shape_filepath: cyan
+    shape_directory: cyan
     shape_globpattern: cyan_bold
     shape_variable: purple
     shape_flag: blue_bold
     shape_custom: green
     shape_nothing: light_cyan
+    shape_matching_brackets: { attr: u }
 }
 
 # External completer example
@@ -122,7 +126,7 @@ let light_theme = {
 
 # The default config record. This is where much of your global configuration is setup.
 let-env config = {
-  external_completer: $nothing # check 'carapace_completer' above to as example
+  external_completer: null # check 'carapace_completer' above to as example
   filesize_metric: false # true => (KB, MB, GB), false => (KiB, MiB, GiB)
   table_mode: rounded # basic, compact, compact_double, light, thin, with_love, rounded, reinforced, heavy, none, other
   use_ls_colors: true
@@ -157,6 +161,7 @@ let-env config = {
   }
   show_banner: false # true or false to enable or disable the banner
   show_clickable_links_in_ls: true # true or false to enable or disable clickable links in the ls listing. your terminal has to support links.
+  render_right_prompt_on_last_line: false # true or false to enable or disable right prompt to be rendered on last line of the prompt.
 
   hooks: {
     pre_prompt: [{
