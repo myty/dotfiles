@@ -10,6 +10,9 @@ source "~/.config/dotfiles/nushell/commands.nu"
 # Custom completions for external commands (those outside of Nushell)
 use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/git/git-completions.nu" *
 
+# Custom git aliases
+use "~/.config/dotfiles/nushell/nu_scripts/aliases/git/nu_alias_git.nu" *
+
 # For more information on themes, see
 # https://www.nushell.sh/book/coloring_and_theming.html
 let dark_theme = {
