@@ -35,20 +35,20 @@ let dark_theme = {
     duration: white
     date: { (date now) - $in |
       if $in < 1hr {
-        '#e61919'
+        'red3b'
       } else if $in < 6hr {
-        '#e68019'
+        'orange3'
       } else if $in < 1day {
-        '#e5e619'
+        'yellow3b'
       } else if $in < 3day {
-        '#80e619'
+        'chartreuse2b'
       } else if $in < 1wk {
-        '#19e619'
+        'green3b'
       } else if $in < 6wk {
-        '#19e5e6'
+        'darkturquoise'
       } else if $in < 52wk {
-        '#197fe6'
-      } else { 'light_gray' }
+        'deepskyblue3b'
+      } else { 'dark_gray' }
     }
     range: white
     float: white
@@ -290,12 +290,13 @@ let-env config = {
   color_config: $dark_theme   # if you want a light theme, replace `$dark_theme` to `$light_theme`
   use_grid_icons: true
   footer_mode: "25" # always, never, number_of_rows, auto
-  float_precision: 2
+  float_precision: 2 # the precision for displaying floats in tables
   # buffer_editor: "emacs" # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.EDITOR and $env.VISUAL
   use_ansi_coloring: true
   edit_mode: emacs # emacs, vi
   shell_integration: true # enables terminal markers and a workaround to arrow keys stop working issue
-  show_banner: false # true or false to enable or disable the banner
+  # true or false to enable or disable the welcome banner at startup
+  show_banner: false
   render_right_prompt_on_last_line: false # true or false to enable or disable right prompt to be rendered on last line of the prompt.
 
   hooks: {
