@@ -11,10 +11,12 @@ source "~/.config/dotfiles/nushell/commands.nu"
 use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/git/git-completions.nu" *
 
 # Custom git aliases
-use "~/.config/dotfiles/nushell/nu_scripts/aliases/git/nu_alias_git.nu" *
+# use "~/.config/dotfiles/nushell/nu_scripts/aliases/git/nu_alias_git.nu" *
 
-# For more information on themes, see
+# For more information on defining custom themes, see
 # https://www.nushell.sh/book/coloring_and_theming.html
+# And here is the theme collection
+# https://github.com/nushell/nu_scripts/tree/main/themes
 let dark_theme = {
     # color for nushell primitives
     separator: white
