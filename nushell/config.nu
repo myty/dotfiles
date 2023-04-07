@@ -1,4 +1,6 @@
 # Nushell Config File
+#
+# version = 0.78.0
 
 # Load local-config.nu
 source ~/.config/nushell/local-config.nu
@@ -7,11 +9,10 @@ source ~/.config/nushell/local-config.nu
 source "~/.config/dotfiles/nushell/aliases.nu"
 source "~/.config/dotfiles/nushell/commands.nu"
 
-# Custom completions for external commands (those outside of Nushell)
-use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/git/git-completions.nu" *
-
-# Custom git aliases
-# use "~/.config/dotfiles/nushell/nu_scripts/aliases/git/nu_alias_git.nu" *
+# Custom aliases from nu_scripts
+use "~/.config/dotfiles/nushell/nu_scripts/git/git.nu" *
+use "~/.config/dotfiles/nushell/nu_scripts/docker/docker.nu" *
+use "~/.config/dotfiles/nushell/nu_scripts/ssh/ssh.nu" *
 
 # For more information on defining custom themes, see
 # https://www.nushell.sh/book/coloring_and_theming.html
@@ -25,7 +26,7 @@ let dark_theme = {
     empty: blue
     # Closures can be used to choose colors for specific values.
     # The value (in this case, a bool) is piped into the closure.
-    bool: { if $in { 'light_cyan' } else { 'light_gray' } }
+    bool: {|| if $in { 'light_cyan' } else { 'light_gray' } }
     int: white
     filesize: {|e|
       if $e == 0b {
@@ -35,7 +36,7 @@ let dark_theme = {
       } else { 'blue' }
     }
     duration: white
-    date: { (date now) - $in |
+    date: {|| (date now) - $in |
       if $in < 1hr {
         'red3b'
       } else if $in < 6hr {
@@ -83,6 +84,7 @@ let dark_theme = {
     shape_internalcall: cyan_bold
     shape_list: cyan_bold
     shape_literal: blue
+    shape_match_pattern: green
     shape_matching_brackets: { attr: u }
     shape_nothing: light_cyan
     shape_operator: yellow
@@ -106,7 +108,7 @@ let light_theme = {
     empty: blue
     # Closures can be used to choose colors for specific values.
     # The value (in this case, a bool) is piped into the closure.
-    bool: { if $in { 'dark_cyan' } else { 'dark_gray' } }
+    bool: {|| if $in { 'dark_cyan' } else { 'dark_gray' } }
     int: dark_gray
     filesize: {|e|
       if $e == 0b {
@@ -116,7 +118,7 @@ let light_theme = {
       } else { 'blue_bold' }
     }
     duration: dark_gray
-  date: { (date now) - $in |
+  date: {|| (date now) - $in |
     if $in < 1hr {
       'red3b'
     } else if $in < 6hr {
@@ -164,6 +166,7 @@ let light_theme = {
     shape_internalcall: cyan_bold
     shape_list: cyan_bold
     shape_literal: blue
+    shape_match_pattern: green
     shape_matching_brackets: { attr: u }
     shape_nothing: light_cyan
     shape_operator: yellow
@@ -187,6 +190,8 @@ let light_theme = {
 
 # The default config record. This is where much of your global configuration is setup.
 let-env config = {
+  # true or false to enable or disable the welcome banner at startup
+  show_banner: false
   ls: {
     use_ls_colors: true # use the LS_COLORS environment variable to colorize output
     clickable_links: true # enable or disable clickable links. Your terminal has to support links.
@@ -200,6 +205,7 @@ let-env config = {
   table: {
     mode: rounded # basic, compact, compact_double, light, thin, with_love, rounded, reinforced, heavy, none, other
     index_mode: always # "always" show indexes, "never" show indexes, "auto" = show indexes when a table has "index" column
+    show_empty: true # show 'empty list' and 'empty record' placeholders for command output
     trim: {
       methodology: wrapping # wrapping or truncating
       wrapping_try_keep_words: true # A strategy used by the 'wrapping' methodology
@@ -297,15 +303,13 @@ let-env config = {
   use_ansi_coloring: true
   edit_mode: emacs # emacs, vi
   shell_integration: true # enables terminal markers and a workaround to arrow keys stop working issue
-  # true or false to enable or disable the welcome banner at startup
-  show_banner: false
   render_right_prompt_on_last_line: false # true or false to enable or disable right prompt to be rendered on last line of the prompt.
 
   hooks: {
-    pre_prompt: [{
+    pre_prompt: [{||
       null  # replace with source code to run before the prompt is shown
     }]
-    pre_execution: [{
+    pre_execution: [{||
       null  # replace with source code to run before the repl input is run
     }]
     env_change: {
@@ -313,8 +317,11 @@ let-env config = {
         null  # replace with source code to run if the PWD environment is different since the last repl input
       }]
     }
-    display_output: {
+    display_output: {||
       if (term size).columns >= 100 { table -e } else { table }
+    }
+    command_not_found: {||
+      null  # replace with source code to return an error message when a command is not found
     }
   }
   menus: [
