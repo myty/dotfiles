@@ -1,6 +1,6 @@
 # Nushell Config File
 #
-# version = 0.82.1
+# version = 0.83.1
 
 # Load local-config.nu
 source ~/.config/nushell/local-config.nu
@@ -821,34 +821,4 @@ $env.config = {
     ]
 }
 
-# source ~/.cache/starship/init.nu
-
-# TODO-TEMP: This is a temporary workaround until starship supports the newest version of nushell
-
-$env.STARSHIP_SHELL = "nu"
-$env.STARSHIP_SESSION_KEY = (random chars -l 16)
-$env.PROMPT_MULTILINE_INDICATOR = (^'~/scoop/shims/starship.exe' prompt --continuation)
-
-# Does not play well with default character module.
-# TODO: Also Use starship vi mode indicators?
-$env.PROMPT_INDICATOR = ""
-
-$env.PROMPT_COMMAND = { ||
-    # jobs are not supported
-    let width = (term size).columns
-    ^'~/scoop/shims/starship.exe' prompt $"--cmd-duration=($env.CMD_DURATION_MS)" $"--status=($env.LAST_EXIT_CODE)" $"--terminal-width=($width)"
-}
-
-# Whether we have config items
-let has_config_items = (not ($env | get -i config | is-empty))
-
-$env.config = if $has_config_items {
-    $env.config | upsert render_right_prompt_on_last_line true
-} else {
-    {render_right_prompt_on_last_line: true}
-}
-
-$env.PROMPT_COMMAND_RIGHT = { ||
-    let width = (term size).columns
-    ^'~/scoop/shims/starship.exe' prompt --right $"--cmd-duration=($env.CMD_DURATION_MS)" $"--status=($env.LAST_EXIT_CODE)" $"--terminal-width=($width)"
-}
+source ~/.cache/starship/init.nu
