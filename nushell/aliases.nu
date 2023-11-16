@@ -4,6 +4,7 @@ alias ac = and-cli
 alias gs = git submodule
 alias gsf = git submodule foreach
 alias gsu = git submodule update
+alias gaa = git add .; git commit --amend --no-edit
 alias python = python3
 alias py = python3
 alias http = ^http
