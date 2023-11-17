@@ -1,6 +1,5 @@
-
 def "gam" [] {
-    git add .; git commit --amend
+    git add .; git commit --amend --no-edit
 }
 
 def "gpr" [] {
