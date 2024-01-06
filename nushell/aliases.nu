@@ -6,4 +6,3 @@ alias gsf = git submodule foreach
 alias gsu = git submodule update
 alias python = python3
 alias py = python3
-alias http = ^http
