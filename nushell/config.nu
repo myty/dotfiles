@@ -10,5 +10,7 @@ use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/npm/npm-completion
 use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/scoop/scoop-completions.nu" *
 # use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/winget/winget-completions.nu" *
 
+use "~/.config/dotfiles/nushell/nu_scripts/modules/fnm/fnm.nu"
+
 # Load Starship
 source ~/.cache/starship/init.nu
