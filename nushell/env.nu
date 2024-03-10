@@ -1,9 +1,7 @@
 $env.EDITOR = 'code'
 
-let home_path = if (sys).host.name == "Windows" {$env.USERPROFILE} else {$env.HOME}
-let nushell_rc = $"($home_path)/.nushellrc"
-if ($nushell_rc | path exists) {
-    nu $nushell_rc
+if ("~/.nushellrc" | path exists) {
+    source "~/.nushellrc"
 }
 
 # Starship
