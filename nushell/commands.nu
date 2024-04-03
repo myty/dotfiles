@@ -15,5 +15,5 @@ def bup [] {
 }
 
 def "git gone" [] {
-    git for-each-ref --format '%(refname:short) %(upstream:track)' refs/heads | lines | where $it ends-with '[gone]' | str substring ..-7 | each { |it| git branch -D $it } | ignore
+    git fetch -p; git for-each-ref --format '%(refname:short) %(upstream:track)' refs/heads | lines | where $it ends-with '[gone]' | str substring ..-7 | each { |it| git branch -D $it } | ignore
 }
