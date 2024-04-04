@@ -8,9 +8,8 @@ source "~/.config/dotfiles/nushell/commands.nu"
 use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/git/git-completions.nu" *
 use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/npm/npm-completions.nu" *
 use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/scoop/scoop-completions.nu" *
-# use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/winget/winget-completions.nu" *
 
-use "~/.config/dotfiles/nushell/nu_scripts/modules/fnm/fnm.nu"
+source "~/.config/dotfiles/nushell/scripts/fnm.nu"
 
 # Load Starship
 source ~/.cache/starship/init.nu
