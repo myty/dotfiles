@@ -9,7 +9,7 @@ use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/git/git-completion
 use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/npm/npm-completions.nu" *
 use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/scoop/scoop-completions.nu" *
 
-source "~/.config/dotfiles/nushell/scripts/fnm.nu"
+use "~/.config/dotfiles/nushell/nu_scripts/modules/fnm/fnm.nu"
 
 # Load Starship
 source ~/.cache/starship/init.nu
