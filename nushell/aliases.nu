@@ -6,3 +6,4 @@ alias gsf = git submodule foreach
 alias gsu = git submodule update --recursive --remote
 alias python = python3
 alias py = python3
+alias mkctl = microk8s kubectl
