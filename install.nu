@@ -1,9 +1,12 @@
-let host_name = (sys host | get name)
-let home_path = if host_name == "Windows" {$env.USERPROFILE} else {$env.HOME}
+let home_path = match $nu.os-info.name {
+    "windows" => $"($env.USERPROFILE)",
+    _ => $"($env.HOME)",
+  }
+
 let dotfiles_symlink_path = $"($home_path)/.config/dotfiles"
 
 if (($dotfiles_symlink_path | path exists) != true) {
-    if host_name == "Windows" {
+    if $nu.os-info.name == "windows" {
         ^mklink /d $"($dotfiles_symlink_path)" $"($env.PWD)"
     } else {
         ^ln -s $env.PWD $dotfiles_symlink_path

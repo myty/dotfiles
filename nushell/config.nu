@@ -9,7 +9,7 @@ use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/git/git-completion
 use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/npm/npm-completions.nu" *
 use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/scoop/scoop-completions.nu" *
 
-use "~/.config/dotfiles/nushell/nu_scripts/modules/fnm/fnm.nu"
+source ./modules/fnm/fnm.nu
 
 # Load rbenv
 # TODO: Move to ~/.nushellrc for MacOS
