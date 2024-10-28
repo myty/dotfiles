@@ -13,7 +13,3 @@ def "dadjoke" [] {
 def bup [] {
     brew update; brew upgrade; brew cleanup
 }
-
-def "git gone" [] {
-    git fetch -p; git for-each-ref --format '%(refname:short) %(upstream:track)' refs/heads | lines | where $it ends-with '[gone]' | str substring ..-7 | each { |it| git branch -D $it } | ignore
-}

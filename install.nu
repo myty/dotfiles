@@ -17,3 +17,5 @@ config reset
 
 echo $"\n# Load config.nu\nsource ~/.config/dotfiles/nushell/config.nu\n" | save --raw --append $"($nu.config-path)"
 echo $"\n# Load env.nu\nsource ~/.config/dotfiles/nushell/env.nu\n" | save --raw --append $"($nu.env-path)"
+
+^deno install -gfr --allow-run -n git-gone jsr:@myty/git-gone
