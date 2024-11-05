@@ -14,9 +14,5 @@ use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/scoop/scoop-comple
 
 source ~/.config/dotfiles/nushell/modules/fnm/fnm.nu
 
-# Load rbenv
-# TODO: Move to ~/.nushellrc for MacOS
-# use "~/.config/dotfiles/nushell/nu_scripts/modules/rbenv/rbenv.nu"
-
 # Load Starship
 source ~/.cache/starship/init.nu
