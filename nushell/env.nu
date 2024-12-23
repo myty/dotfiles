@@ -1,4 +1,5 @@
 $env.EDITOR = 'code'
+$env.config.buffer_editor = 'code'
 
 touch ~/.nushellrc
 source ~/.nushellrc
