@@ -5,8 +5,8 @@ touch ~/.nushellrc
 source ~/.nushellrc
 
 # Mise
-let mise_path = $nu.default-config-dir | path join mise.nu
-^mise activate nu | save $mise_path --force
+# let mise_path = $nu.default-config-dir | path join mise.nu
+# ^mise activate nu | save $mise_path --force
 
 # Starship
 mkdir ~/.cache/starship
