@@ -12,8 +12,6 @@ use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/docker/docker-comp
 use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/dotnet/dotnet-completions.nu" *
 use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/scoop/scoop-completions.nu" *
 
-source ~/.config/dotfiles/nushell/modules/fnm/fnm.nu
-
 # Load Mise
 use ($nu.default-config-dir | path join mise.nu)
 
