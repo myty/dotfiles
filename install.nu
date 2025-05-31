@@ -1,15 +1,15 @@
 let dotfiles_symlink_path = match $nu.os-info.name {
-    "windows" => $"($env.USERPROFILE)\\.config\\dotfiles",
-    _ => $"($env.HOME)/.config/dotfiles",
+  "windows" => $"($env.USERPROFILE)\\.config\\dotfiles",
+  _ => $"($env.HOME)/.config/dotfiles",
 }
 
 if (($dotfiles_symlink_path | path exists) != true) {
-    echo $"Creating symlink at ($dotfiles_symlink_path) to ($env.PWD)"
-    if $nu.os-info.name == "windows" {
-        ^mklink /d $"($dotfiles_symlink_path)" $"($env.PWD)"
-    } else {
-        ^ln -s $env.PWD $dotfiles_symlink_path
-    }
+  echo $"Creating symlink at ($dotfiles_symlink_path) to ($env.PWD)"
+  if $nu.os-info.name == "windows" {
+    ^mklink /d $"($dotfiles_symlink_path)" $"($env.PWD)"
+  } else {
+    ^ln -s $env.PWD $dotfiles_symlink_path
+  }
 }
 
 config reset

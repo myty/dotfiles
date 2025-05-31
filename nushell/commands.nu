@@ -1,15 +1,15 @@
 def "gam" [] {
-    git add .; git commit --amend --no-edit
+  git add .; git commit --amend --no-edit
 }
 
 def "gpr" [] {
-    git pull; git rebase
+  git pull; git rebase
 }
 
 def "dadjoke" [] {
-    curl https://icanhazdadjoke.com -H "Accept: text/plain"
+  curl https://icanhazdadjoke.com -H "Accept: text/plain"
 }
 
 def bup [] {
-    brew update; brew upgrade; brew cleanup
+  brew update; brew upgrade; brew cleanup
 }
