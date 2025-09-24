@@ -14,3 +14,5 @@ use "~/.config/dotfiles/nushell/nu_scripts/custom-completions/scoop/scoop-comple
 
 # Load Mise
 use ($nu.default-config-dir | path join mise.nu)
+
+source ~/.zoxide.nu
