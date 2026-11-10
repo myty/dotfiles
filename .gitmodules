@@ -1,0 +1,5 @@
+[submodule "nushell/nu_scripts"]
+	path = nushell/nu_scripts
+	url = https://github.com/myty/nu_scripts.git
+	shallow = true
+	branch = main

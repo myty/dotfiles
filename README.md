@@ -25,5 +25,6 @@ nu install.nu
 | `nushell/aliases.nu`, `commands.nu` | Aliases and custom commands |
 | `nushell/autoload.nu` | Caches mise/starship/zoxide/carapace init scripts in the vendor autoload dir; regenerated only when the binary is newer |
 | `nushell/local.nu` | Optional, gitignored, machine-specific overrides loaded last by `config.nu` |
+| `nushell/nu_scripts` | Submodule of the `myty/nu_scripts` fork; a daily workflow syncs the fork and Dependabot bumps the submodule weekly |
 | `nushell/path-priority.nu` | Keeps PATH ordered: mise > homebrew > rest |
 | `mise.toml` | Dev tool versions |

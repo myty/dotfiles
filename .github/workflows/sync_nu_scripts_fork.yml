@@ -1,0 +1,22 @@
+name: Sync nu_scripts fork
+
+# Lives here rather than in the fork so the fork's main stays identical to
+# upstream and always fast-forwards. Dependabot then picks up the fork's new
+# commits and opens a PR to bump the submodule.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * *"
+
+permissions: {}
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fast-forward myty/nu_scripts from nushell/nu_scripts
+        env:
+          # Fine-grained PAT with Contents: read/write on myty/nu_scripts only.
+          GH_TOKEN: ${{ secrets.NU_SCRIPTS_FORK_TOKEN }}
+        run: gh repo sync myty/nu_scripts --branch main
