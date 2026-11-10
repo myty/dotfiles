@@ -1,39 +1,53 @@
 # PATH arrives from ~/.dx/env.nu (which also reads /etc/paths and /etc/paths.d),
 # from mise's activation hook and from assorted installers, each adding entries
 # on its own terms, so rebuild it in tiers rather than trying to make every one
-# of them land in the right place.
+# of them land in the right place. Tiers, highest priority first: mise,
+# Homebrew (if present), everything else.
 
-const TIERS = ["mise" "homebrew" "other"]
-
-def tier-of [dir: string]: nothing -> string {
-    let mise_root = ($env.MISE_DATA_DIR? | default $"($env.HOME)/.local/share/mise")
-    let brew_root = ($env.HOMEBREW_PREFIX? | default "/opt/homebrew")
-    if ($dir | str starts-with $mise_root) {
-        "mise"
-    } else if ($dir | str starts-with $brew_root) {
-        "homebrew"
+def tier-roots []: nothing -> list<string> {
+    let mise_root = if $nu.os-info.name == "windows" {
+        $env.MISE_DATA_DIR? | default ($env.LOCALAPPDATA | path join "mise")
     } else {
-        "other"
+        $env.MISE_DATA_DIR? | default ($nu.home-dir | path join ".local" "share" "mise")
     }
+    [$mise_root, $env.HOMEBREW_PREFIX?] | compact --empty
+}
+
+def is-under [dir: string, root: string]: nothing -> bool {
+    let fold = {|p| if $nu.os-info.name == "windows" { $p | str lowercase } else { $p } }
+    let dir = (do $fold $dir)
+    let root = (do $fold $root)
+    $dir == $root or ($dir | str starts-with ($root | path join ""))
 }
 
 export def prioritize-path []: list<string> -> list<string> {
-    let by_tier = ($in | uniq | group-by {|dir| tier-of $dir })
-    $TIERS | each {|tier| $by_tier | get -o $tier | default [] } | flatten
+    let roots = (tier-roots)
+    let other_tier = ($roots | length)
+    $in
+    | uniq
+    | enumerate
+    | insert tier {|entry|
+        $roots
+        | enumerate
+        | where {|root| is-under $entry.item $root.item }
+        | get -o 0.index
+        | default $other_tier
+    }
+    | sort-by tier index
+    | get item
 }
 
 export def --env apply-path-priority []: nothing -> nothing {
-    $env.PATH = ($env.PATH | prioritize-path)
+    let reordered = ($env.PATH | prioritize-path)
+    if $env.PATH != $reordered {
+        $env.PATH = $reordered
+    }
 }
 
-# The `brew doctor` PATH check one tier up: mise's tools must outrank Homebrew's,
-# as Homebrew's outrank the system's.
-export def path-doctor []: nothing -> nothing {
-    let reordered = ($env.PATH | prioritize-path)
-    if $env.PATH == $reordered {
-        print "PATH order is good: mise > homebrew > everything else."
-        return
-    }
-    print "PATH is out of order. Run `apply-path-priority` to fix it. Expected:"
-    print ($reordered | to text)
+# Registers apply-path-priority as a pre_prompt hook, once per session.
+export def --env install-path-priority-hook []: nothing -> nothing {
+    if ($env.PATH_PRIORITY_HOOK_INSTALLED? | default false) { return }
+    $env.PATH_PRIORITY_HOOK_INSTALLED = true
+    let hook = { apply-path-priority }
+    $env.config.hooks.pre_prompt = ($env.config.hooks.pre_prompt? | default [] | append $hook)
 }
