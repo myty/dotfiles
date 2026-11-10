@@ -8,12 +8,6 @@ $env.config.completions.algorithm = "fuzzy"
 source "~/.config/dotfiles/nushell/aliases.nu"
 source "~/.config/dotfiles/nushell/commands.nu"
 
-# mise rewrites PATH wholesale after env.nu runs and again from its pre_prompt
-# hook, so re-apply the tiering after each of its runs. Hooks run in
-# registration order, and mise registers its own before this file loads.
-use ~/.config/dotfiles/nushell/path-priority.nu *
-install-path-priority-hook
-
 # Machine-specific overrides (gitignored). `source` needs a parse-time path, so
 # fall back to null (a no-op) when the file is absent.
 const LOCAL_CONFIG_PATH = ($nu.home-dir | path join ".config" "dotfiles" "nushell" "local.nu")
