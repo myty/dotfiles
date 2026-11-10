@@ -81,3 +81,6 @@
 .gitattributes export-ignore
 .gitignore     export-ignore
 .gitkeep       export-ignore
+
+# Nushell
+*.nu       text eol=lf

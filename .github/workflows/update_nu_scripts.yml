@@ -1,25 +1,26 @@
-# This is a basic workflow to help you get started with Actions
-
-name: Update Nu_Scripts submodule
+name: Update nu_scripts submodule
 
 on:
-  push:
   workflow_dispatch:
   schedule:
-    - cron:  '0 22 * * *'
+    - cron: "0 22 * * 1"
+
+permissions:
+  contents: write
 
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Pull latest commits from the nu_script repo
-      run: git submodule foreach git pull
-    - name: Commit and push if it changed
-      run: |-
-        git config user.name "Automated"
-        git config user.email "actions@users.noreply.github.com"
-        git add -A
-        timestamp=$(date -u)
-        git commit -m "Latest nu_script changes: ${timestamp}" || exit 0
-        git push
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Pull latest commits from nu_scripts
+        run: git submodule update --remote
+      - name: Commit and push if changed
+        run: |-
+          git config user.name "Automated"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -m "chore: update nu_scripts" || exit 0
+          git push
