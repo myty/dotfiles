@@ -15,7 +15,10 @@ if not ($link | path exists) {
 }
 
 def ensure-sourced [target: path, line: string] {
-  if not ($target | path exists) { touch $target }
+  if not ($target | path exists) {
+    mkdir ($target | path dirname)
+    touch $target
+  }
   if not ((open --raw $target) | str contains $line) {
     print $"Adding to ($target): ($line)"
     $"\n# dotfiles\n($line)\n" | save --raw --append $target
