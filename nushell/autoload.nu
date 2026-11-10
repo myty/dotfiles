@@ -15,12 +15,22 @@ def is-stale [script: path, binary: path]: nothing -> bool {
     (ls ($binary | path expand) | get 0.modified) > (ls $script | get 0.modified)
 }
 
+# env.nu runs before mise has put its tools on PATH, so ask mise directly.
+def find-binary [name: string]: nothing -> any {
+    let on_path = (which $name | get -o 0.path)
+    if $on_path != null { return $on_path }
+    if (which mise | is-empty) { return null }
+
+    let from_mise = (do { ^mise which $name } | complete)
+    if $from_mise.exit_code == 0 { $from_mise.stdout | str trim } else { null }
+}
+
 export def refresh-autoload []: nothing -> nothing {
     let autoload_dir = ($nu.data-dir | path join "vendor" "autoload")
     mkdir $autoload_dir
 
     for generator in $GENERATORS {
-        let binary = (which $generator.name | get -o 0.path)
+        let binary = (find-binary $generator.name)
         if $binary == null { continue }
 
         let script = ($autoload_dir | path join $"($generator.name).nu")
