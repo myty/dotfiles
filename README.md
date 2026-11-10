@@ -4,7 +4,7 @@ Cross-platform dotfiles for [Nushell](https://www.nushell.sh) on macOS, Linux an
 
 ## What you get
 
-- **Prompt and navigation:** [starship](https://starship.rs) prompt and [zoxide](https://github.com/ajeetdsouza/zoxide) (`z <dir>` jumps to frequently used directories).
+- **Prompt and navigation:** [starship](https://starship.rs) prompt and [zoxide](https://github.com/ajeetdsouza/zoxide) (`z <dir>` jumps to frequently used directories, `zi` picks one interactively with [fzf](https://github.com/junegunn/fzf)).
 - **Completions:** [carapace](https://carapace.sh) completes most CLIs (`git`, `gh`, `docker`, `mise`, `dotnet` and more); fuzzy, case-insensitive matching.
 - **Tool versions:** `mise.toml` pins the dev runtimes and shell tools.
 - **PATH order:** mise tools first, then Homebrew, then everything else, kept that way even when mise or an installer rewrites `PATH`.
