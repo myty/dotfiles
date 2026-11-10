@@ -1,6 +1,19 @@
 # dotfiles
 
-Cross-platform dotfiles, centered on [Nushell](https://www.nushell.sh).
+Cross-platform dotfiles for [Nushell](https://www.nushell.sh) on macOS, Linux and Windows. Tool versions come from [mise](https://mise.jdx.dev).
+
+## What you get
+
+- **Prompt and navigation:** [starship](https://starship.rs) prompt and [zoxide](https://github.com/ajeetdsouza/zoxide) (`z <dir>` jumps to frequently used directories).
+- **Completions:** [carapace](https://carapace.sh) completes most CLIs (`git`, `gh`, `docker`, `mise`, `dotnet` and more); fuzzy, case-insensitive matching.
+- **Tool versions:** `mise.toml` pins the dev runtimes and shell tools.
+- **PATH order:** mise tools first, then Homebrew, then everything else, kept that way even when mise or an installer rewrites `PATH`.
+- **History:** SQLite-backed, 100k entries.
+- **Aliases and commands:** `cls`, `gp`, `gam` (amend without editing), `gpr` (pull with rebase).
+
+## Prerequisites
+
+[Nushell](https://www.nushell.sh/book/installation.html) and [mise](https://mise.jdx.dev/getting-started.html). Install the shell tools with `mise install`, run from this repo, which also installs the runtimes in `mise.toml`. Tools that aren't installed are skipped, so the config works without them.
 
 ## Install
 
@@ -10,21 +23,46 @@ cd dotfiles
 nu install.nu
 ```
 
-`install.nu` is idempotent. It:
+`install.nu` is safe to re-run. It:
 
-1. Symlinks the repo to `~/.config/dotfiles` (Windows needs developer mode or admin).
-2. Appends `source` lines to Nushell's `env.nu` and `config.nu`, if missing.
-3. Seeds `~/.nushellrc` from `examples/.nushellrc.example` if absent.
+1. Symlinks the repo to `~/.config/dotfiles`. Windows needs developer mode or an elevated shell.
+2. Appends `source` lines to Nushell's `env.nu` and `config.nu`, if they're missing.
+3. Seeds `~/.nushellrc` from `examples/.nushellrc.example`, if it doesn't exist.
+
+Open a new shell afterwards.
+
+## How it loads
+
+Nushell starts in this order, and the order matters:
+
+1. `nushell/env.nu` generates tool init scripts (below), then sources `~/.nushellrc`.
+2. `nushell/config.nu` sets options, then sources `aliases.nu`, `commands.nu` and an optional `local.nu`.
+3. Nushell's vendor autoload directory loads the generated scripts alphabetically: `carapace`, `mise`, `starship`, `zoxide`, then `zz-path-priority`.
+
+`nushell/autoload.nu` writes the generated scripts. It regenerates one only when that tool's binary is newer than the cached script, so shell startup stays fast. The `zz-` prefix makes the PATH script sort after mise's, so its hook runs last.
 
 ## Layout
 
 | Path | Purpose |
 | --- | --- |
-| `nushell/env.nu` | Sources `~/.nushellrc` (machine-specific env, mise, starship, dx) |
-| `nushell/config.nu` | Main config; loads aliases, commands, PATH priority |
+| `install.nu` | Idempotent installer |
+| `mise.toml` | Runtimes and shell tools |
+| `nushell/env.nu` | Refreshes generated init scripts, sources `~/.nushellrc` |
+| `nushell/config.nu` | Shell options; loads aliases, commands and `local.nu` |
 | `nushell/aliases.nu`, `commands.nu` | Aliases and custom commands |
-| `nushell/autoload.nu` | Caches mise/starship/zoxide/carapace init scripts in the vendor autoload dir; regenerated only when the binary is newer |
-| `nushell/local.nu` | Optional, gitignored, machine-specific overrides loaded last by `config.nu` |
-| `nushell/nu_scripts` | Submodule of the `myty/nu_scripts` fork; a daily workflow syncs the fork and Dependabot bumps the submodule weekly |
-| `nushell/path-priority.nu` | Keeps PATH ordered: mise > homebrew > rest |
-| `mise.toml` | Dev tool versions |
+| `nushell/autoload.nu` | Generates and caches init scripts in the vendor autoload dir |
+| `nushell/path-priority.nu` | The PATH ordering logic and its `pre_prompt` hook |
+| `nushell/nu_scripts` | Submodule of the `myty/nu_scripts` fork (not loaded by default) |
+| `examples/.nushellrc.example` | Template for `~/.nushellrc` |
+
+## Customize
+
+- **Machine-specific environment:** edit `~/.nushellrc`. It lives outside the repo, and `env.nu` sources it before everything else. It's the place for `$env.EDITOR`, tokens and local-only commands.
+- **Machine-specific shell config:** create `nushell/local.nu`. It's gitignored and loaded last by `config.nu`.
+- **Check PATH order:** `$env.PATH | first 10` should list mise paths, then Homebrew's.
+
+## Maintenance
+
+- **CI** (`.github/workflows/check.yml`): runs `install.nu` on Linux, macOS and Windows, then parse-checks every Nushell file.
+- **`nu_scripts` fork:** `sync_nu_scripts_fork.yml` fast-forwards `myty/nu_scripts` from upstream daily. It needs a repository secret, `NU_SCRIPTS_FORK_TOKEN`: a fine-grained PAT with Contents read/write on `myty/nu_scripts` only.
+- **Dependabot:** bumps the submodule and GitHub Actions versions weekly.
