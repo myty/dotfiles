@@ -5,7 +5,7 @@ Cross-platform dotfiles, centered on [Nushell](https://www.nushell.sh).
 ## Install
 
 ```nu
-git clone --recurse-submodules https://github.com/myty/dotfiles
+git clone https://github.com/myty/dotfiles
 cd dotfiles
 nu install.nu
 ```
@@ -26,5 +26,4 @@ nu install.nu
 | `nushell/autoload.nu` | Caches mise/starship/zoxide/carapace init scripts in the vendor autoload dir; regenerated only when the binary is newer |
 | `nushell/local.nu` | Optional, gitignored, machine-specific overrides loaded last by `config.nu` |
 | `nushell/path-priority.nu` | Keeps PATH ordered: mise > homebrew > rest |
-| `nushell/nu_scripts` | Submodule of completion scripts |
 | `mise.toml` | Dev tool versions |
