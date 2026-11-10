@@ -1,11 +1,11 @@
-def "gam" [] {
-  git add .; git commit --amend --no-edit
+def gam [] {
+  git commit --amend --no-edit --all
 }
 
-def "gpr" [] {
-  git pull; git rebase
+def gpr [] {
+  git pull --rebase
 }
 
-def "dadjoke" [] {
-  curl https://icanhazdadjoke.com -H "Accept: text/plain"
+def dadjoke [] {
+  http get https://icanhazdadjoke.com --headers [Accept text/plain]
 }
