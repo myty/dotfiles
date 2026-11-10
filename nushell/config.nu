@@ -1,4 +1,8 @@
 $env.config.show_banner = false
+$env.config.history.file_format = "sqlite"
+$env.config.history.max_size = 100_000
+$env.config.completions.case_sensitive = false
+$env.config.completions.algorithm = "fuzzy"
 
 # Additional config
 source "~/.config/dotfiles/nushell/aliases.nu"
@@ -16,3 +20,9 @@ source "~/.config/dotfiles/nushell/commands.nu"
 # registration order, and mise registers its own before this file loads.
 use ~/.config/dotfiles/nushell/path-priority.nu *
 install-path-priority-hook
+
+# Machine-specific overrides (gitignored). `source` needs a parse-time path, so
+# fall back to null (a no-op) when the file is absent.
+const LOCAL_CONFIG_PATH = ($nu.home-dir | path join ".config" "dotfiles" "nushell" "local.nu")
+const LOCAL_CONFIG = (if ($LOCAL_CONFIG_PATH | path exists) { $LOCAL_CONFIG_PATH } else { null })
+source $LOCAL_CONFIG

@@ -6,3 +6,8 @@ deno = "latest"
 go = "latest"
 ruby = "latest"
 "vfox:version-fox/vfox-dotnet" = "latest"
+
+# Shell tooling used by nushell/autoload.nu
+starship = "latest"
+zoxide = "latest"
+carapace = "latest"

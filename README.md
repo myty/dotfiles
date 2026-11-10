@@ -23,6 +23,8 @@ nu install.nu
 | `nushell/env.nu` | Sources `~/.nushellrc` (machine-specific env, mise, starship, dx) |
 | `nushell/config.nu` | Main config; loads aliases, commands, PATH priority |
 | `nushell/aliases.nu`, `commands.nu` | Aliases and custom commands |
+| `nushell/autoload.nu` | Caches mise/starship/zoxide/carapace init scripts in the vendor autoload dir; regenerated only when the binary is newer |
+| `nushell/local.nu` | Optional, gitignored, machine-specific overrides loaded last by `config.nu` |
 | `nushell/path-priority.nu` | Keeps PATH ordered: mise > homebrew > rest |
 | `nushell/nu_scripts` | Submodule of completion scripts |
 | `mise.toml` | Dev tool versions |

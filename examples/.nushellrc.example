@@ -1,10 +1,6 @@
+# Machine-specific settings, sourced from nushell/env.nu.
+# mise, starship, zoxide and carapace init scripts are generated automatically
+# by nushell/autoload.nu, so they don't belong here.
+
 $env.EDITOR = 'code'
 $env.config.buffer_editor = 'code'
-
-# Setup Mise
-let mise_path = $nu.default-config-dir | path join mise.nu
-^mise activate nu | save $mise_path --force
-
-# Starship
-mkdir ~/.cache/starship
-starship init nu | save ~/.cache/starship/init.nu -f
