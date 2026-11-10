@@ -6,14 +6,14 @@ Cross-platform dotfiles for [Nushell](https://www.nushell.sh) on macOS, Linux an
 
 - **Prompt and navigation:** [starship](https://starship.rs) prompt and [zoxide](https://github.com/ajeetdsouza/zoxide) (`z <dir>` jumps to frequently used directories, `zi` picks one interactively with [fzf](https://github.com/junegunn/fzf)).
 - **Completions:** [carapace](https://carapace.sh) completes most CLIs (`git`, `gh`, `docker`, `mise`, `dotnet` and more); fuzzy, case-insensitive matching.
-- **Tool versions:** `mise.toml` pins the dev runtimes and shell tools.
+- **Tool versions:** `mise/shell-tools.toml` provides the shell tools globally, and `mise.toml` pins the dev runtimes for this repo.
 - **PATH order:** mise tools first, then Homebrew, then everything else, kept that way even when mise or an installer rewrites `PATH`.
 - **History:** SQLite-backed, 100k entries.
 - **Aliases and commands:** `cls`, `gp`, `gam` (amend without editing), `gpr` (pull with rebase).
 
 ## Prerequisites
 
-[Nushell](https://www.nushell.sh/book/installation.html) and [mise](https://mise.jdx.dev/getting-started.html). Install the shell tools with `mise install`, run from this repo, which also installs the runtimes in `mise.toml`. Tools that aren't installed are skipped, so the config works without them.
+[Nushell](https://www.nushell.sh/book/installation.html) and [mise](https://mise.jdx.dev/getting-started.html). After `nu install.nu`, run `mise install` to get the shell tools (starship, zoxide, carapace, fzf). Run it inside this repo to also install the runtimes in `mise.toml`. Tools that aren't installed are skipped, so the config works without them.
 
 ## Install
 
@@ -27,7 +27,8 @@ nu install.nu
 
 1. Symlinks the repo to `~/.config/dotfiles`. Windows needs developer mode or an elevated shell.
 2. Appends `source` lines to Nushell's `env.nu` and `config.nu`, if they're missing.
-3. Seeds `~/.nushellrc` from `examples/.nushellrc.example`, if it doesn't exist.
+3. Symlinks `mise/shell-tools.toml` into `~/.config/mise/conf.d/`, which mise merges into its global config so the shell tools work from any directory.
+4. Seeds `~/.nushellrc` from `examples/.nushellrc.example`, if it doesn't exist.
 
 Open a new shell afterwards.
 
@@ -46,7 +47,8 @@ Nushell starts in this order, and the order matters:
 | Path | Purpose |
 | --- | --- |
 | `install.nu` | Idempotent installer |
-| `mise.toml` | Runtimes and shell tools |
+| `mise/shell-tools.toml` | Shell tools, linked into mise's global `conf.d/` |
+| `mise.toml` | Dev runtimes, active only inside this repo |
 | `nushell/env.nu` | Refreshes generated init scripts, sources `~/.nushellrc` |
 | `nushell/config.nu` | Shell options; loads aliases, commands and `local.nu` |
 | `nushell/aliases.nu`, `commands.nu` | Aliases and custom commands |

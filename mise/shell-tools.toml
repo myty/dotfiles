@@ -1,0 +1,8 @@
+# Tools that nushell/autoload.nu and the shell config call by name from any
+# directory. install.nu links this file into ~/.config/mise/conf.d/ so mise
+# treats it as part of the global config.
+[tools]
+starship = "latest"
+zoxide = "latest"
+carapace = "latest"
+fzf = "latest"

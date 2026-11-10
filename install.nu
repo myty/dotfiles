@@ -4,15 +4,23 @@
 let home = if $nu.os-info.name == "windows" { $env.USERPROFILE } else { $env.HOME }
 let link = ($home | path join ".config" "dotfiles")
 
-if not ($link | path exists) {
-  print $"Creating symlink at ($link) to ($env.PWD)"
+def link-to [link: path, target: path, --directory] {
+  if ($link | path exists) { return }
+
+  print $"Creating symlink at ($link) to ($target)"
   mkdir ($link | path dirname)
   if $nu.os-info.name == "windows" {
-    ^cmd /c mklink /d $link $env.PWD
+    if $directory { ^cmd /c mklink /d $link $target } else { ^cmd /c mklink $link $target }
   } else {
-    ^ln -s $env.PWD $link
+    ^ln -s $target $link
   }
 }
+
+link-to --directory $link $env.PWD
+
+# mise merges every file in conf.d/ into its global config, so the shell tools
+# are available from any directory.
+link-to ($home | path join ".config" "mise" "conf.d" "dotfiles.toml") ($env.PWD | path join "mise" "shell-tools.toml")
 
 def ensure-sourced [target: path, line: string] {
   if not ($target | path exists) {
