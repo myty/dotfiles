@@ -2,6 +2,8 @@
 
 Nushell dotfiles. `README.md` covers layout and install; this file holds what the code doesn't say.
 
+When setting up these dotfiles on a machine or diagnosing or improving its `~/.nushellrc`, follow `docs/nushell-setup.md`.
+
 ## Verify
 
 - Parse-check with absolute paths: `nu -c 'nu-check --debug /abs/path/file.nu'`. Run from a script file, `nu-check` resolves relative paths against the script's directory, not the working directory.
