@@ -46,8 +46,9 @@ export def --env apply-path-priority []: nothing -> nothing {
 
 # Registers apply-path-priority as a pre_prompt hook, once per session.
 export def --env install-path-priority-hook []: nothing -> nothing {
-    if ($env.PATH_PRIORITY_HOOK_INSTALLED? | default false) { return }
-    $env.PATH_PRIORITY_HOOK_INSTALLED = true
-    let hook = { apply-path-priority }
-    $env.config.hooks.pre_prompt = ($env.config.hooks.pre_prompt? | default [] | append $hook)
+    let hooks = ($env.config.hooks.pre_prompt? | default [])
+    let installed = ($hooks | any {|hook| (try { $hook.__path_priority_hook? } catch { null }) == true })
+    if $installed { return }
+    let hook = { __path_priority_hook: true, code: { apply-path-priority } }
+    $env.config.hooks.pre_prompt = ($hooks | append $hook)
 }

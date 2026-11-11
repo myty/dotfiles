@@ -25,7 +25,7 @@ jobs:
           # glob returns absolute paths; nu-check resolves relative ones
           # against this script's temp directory, not the repo.
           let failed = (
-            glob "{nushell/*.nu,install.nu}"
+            glob "{nushell/*.nu,tests/*.nu,install.nu}"
             | where {|file| not (nu-check $file) }
           )
           if ($failed | is-not-empty) {
@@ -33,3 +33,6 @@ jobs:
             exit 1
           }
           print "All files parse"
+      - name: Test PATH-priority hook
+        shell: nu {0}
+        run: nu -n tests/path-priority.nu
