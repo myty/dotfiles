@@ -1,7 +1,8 @@
 # Tools like mise, starship, zoxide and carapace print a nushell init script.
 # Regenerating those on every shell start is slow, so write each one into
 # nushell's vendor autoload dir (loaded automatically) and only refresh it when
-# the tool's binary is newer than the cached script.
+# the tool's binary is newer than the cached script (or, for mise, when PATH
+# has an entry the cached script lacks).
 
 const GENERATORS = [
     { name: "starship", args: [init nu] }
@@ -13,6 +14,35 @@ const GENERATORS = [
 def is-stale [script: path, binary: path]: nothing -> bool {
     if not ($script | path exists) { return true }
     (ls ($binary | path expand) | get 0.modified) > (ls $script | get 0.modified)
+}
+
+# mise copies the current PATH into its script and restores that copy at
+# startup, so a script generated before a PATH entry was added (e.g. in
+# ~/.nushellrc) silently drops it. mise leaves its own tool directories out of
+# the copy, so those don't count as missing.
+#
+# A shell started from one where mise is already active inherits extra entries
+# from mise (e.g. ~/.cargo/bin) that would look missing, so only the outermost
+# shell checks; nested shells inherit its PATH anyway.
+def mise-script-misses-path-entries [script: path]: nothing -> bool {
+    if "MISE_SHELL" in $env { return false }
+
+    let mise_data_dir = if $nu.os-info.name == "windows" {
+        $env.MISE_DATA_DIR? | default ($env.LOCALAPPDATA | path join "mise")
+    } else {
+        $env.MISE_DATA_DIR? | default ($nu.home-dir | path join ".local" "share" "mise")
+    }
+    let script_path = (
+        open --raw $script
+        | parse --regex "\\$env\\.PATH = \\(r#'(?<path>[^']*)'#"
+        | get -o 0.path
+        | default ""
+        | split row (char esep)
+    )
+    $env.PATH
+    | split row (char esep)
+    | where {|dir| not ($dir | str starts-with $mise_data_dir) }
+    | any {|dir| $dir not-in $script_path }
 }
 
 # Autoload scripts run after config.nu, in alphabetical order, and mise's
@@ -43,7 +73,10 @@ export def refresh-autoload []: nothing -> nothing {
         if $binary == null { continue }
 
         let script = ($autoload_dir | path join $"($generator.name).nu")
-        if (is-stale $script $binary) {
+        let stale = (is-stale $script $binary) or (
+            $generator.name == "mise" and (mise-script-misses-path-entries $script)
+        )
+        if $stale {
             ^$binary ...$generator.args | save --force $script
         }
     }
